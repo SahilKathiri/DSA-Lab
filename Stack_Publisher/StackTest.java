@@ -12,7 +12,7 @@ class Publisher{
     }
 
     public String toString() {
-        return pubId + " " + pubName + " " + pin;    
+        return pubId + " " + pubName + " " + pin + "\n";
     }
 }
 
@@ -27,6 +27,7 @@ class Stack {
 
     public void push(Publisher p) {
         if(size == list.length){
+            // OverFlow
             System.out.println("Overflow occured");
         }
 
@@ -36,7 +37,7 @@ class Stack {
 
     public Publisher pop() {
         if(size < 0) {
-            // System.out.println("Underflow occured");
+            // UnderFlow
             size = -1;
             return null;
         }    
@@ -81,7 +82,6 @@ public class StackTest{
                 String pin = s[1];
                 String name = s[2];
                 
-            //  System.out.println(id + " " + pin + " " + name);
                 Publisher temp = new Publisher(id, pin, name);
                 p.push(temp);
             }
@@ -89,16 +89,13 @@ public class StackTest{
             System.out.println("Objects pushed to stack: ");
             p.display();
 
-
             System.out.println("Popping objects from stack to Publisherout.dat...");
             BufferedWriter op = new BufferedWriter(new FileWriter("Publisherout.dat"));
             Publisher temp;
             while((temp = p.pop()) != null) {
                 op.append(temp.toString());
-                op.append("\n");
                 op.flush();
             }
-
 
             ip.close();
             op.close();
