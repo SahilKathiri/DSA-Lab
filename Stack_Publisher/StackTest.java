@@ -19,7 +19,7 @@ class Publisher{
 class Stack {
 
     Publisher[] list;
-    int size = -1;
+    int size = -1;                           //If stack empty, size=-1
 
     public Stack(int size){
         list = new Publisher[size];
@@ -29,8 +29,10 @@ class Stack {
         if(size == list.length){
             // OverFlow
             System.out.println("Overflow occured");
+            return;
         }
-
+        
+        // If no overflow, add obj to list
         size++;
         list[size] = p;
     }
@@ -42,6 +44,7 @@ class Stack {
             return null;
         }    
 
+        // If no underflow, delete obj from list
         Publisher temp = list[size];
         list[size] = null;
         size--;
@@ -49,12 +52,14 @@ class Stack {
         return temp;
     }
 
+    // Not used, but another operation. Used to see what the top of the stack is.
     public Publisher peek() {
         if(size >= 0)
             return list[size];
         return null;
     }
 
+    // Again, not used. Still can be useful.
     public boolean isEmpty() {
         if(size == -1) 
             return true;
@@ -75,6 +80,8 @@ public class StackTest{
 
         try{
             String line;
+            
+            // Reading a file with BufferedReader is easier (for me atleast)
             BufferedReader ip = new BufferedReader(new FileReader("Publisherin.dat"));
             while((line = ip.readLine()) != null) {
                 String[] s = line.split(" ");
@@ -94,13 +101,19 @@ public class StackTest{
             Publisher temp;
             while((temp = p.pop()) != null) {
                 op.append(temp.toString());
+                System.out.print(temp.toString());
                 op.flush();
             }
 
+            // No big harm would be done here if you don't close the file. 
+            // But it would be better if you did.
+            // Or use try-with-resources.
             ip.close();
             op.close();
 
         }  catch(Exception e) {
+            // Don't do this. Catch specific exceptions. 
+            // I did this because I was lazy.
             e.printStackTrace();
         }
     }   
