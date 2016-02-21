@@ -14,81 +14,64 @@ class Dept {
     public String toString() {
         return deptName + " " + deptId + " " + noOfStudents + "\n";
     }
+
+    public boolean equals(Dept o) {
+        return o.deptId.equals(deptId) && o.deptName.equals(deptName) && o.noOfStudents.equals(noOfStudents);    
+    }
 }
 
 class Queue {
-    int front = -1;
-    int back = -1;
-    int size;
+    final int capacity = 5;
+    Dept[] list;
+    final int N;
+    int front = 0;
+    int rear = 0;
 
-    Dept[] queue;
 
-    public Queue(int i) {
-        queue = new Dept[i];
-        size = i;
+    public Queue(int c) {
+        N = c;
+        list = new Dept[N];
+    }
+
+    int size() {
+        if(rear > front) 
+            return rear - front;
+        return N - front - rear;
     }
 
     public boolean isEmpty() {
-        return (front == back)? true: false;    
+        return (rear == front)? true : false;    
     }
 
-    public int nextPos(int x) {
-        x++;
-        if(!(x < size)) {
-            x = 0;   
-        }   
-        return x;
+    public boolean isFull() {
+        int diff = rear - front;
+        if(diff == -1 || diff == (N - 1))
+            return true;
+        return false;
     }
 
-    public int prePos(int x) {
-        x--;
-        if(x < 0) {
-            x = size - 1;
-        }
-        return x;
-    }
-
-    public void enqueue(Dept d) {
-        if(front <= nextPos(back)) {
-            back = nextPos(back);
-            queue[back] = d;
-        }
-        
-        if(nextPos(back) == front) {
-            //Overflow
-            System.out.println("Overflow");
-            return;
+    public void enqueue(Dept obj) {
+        if(isFull()) {
+            System.out.println("Queue is full");    
+        }    
+        else {
+            list[rear] = obj;
+            rear = (rear + 1) % N;
         }
     }
 
     public Dept dequeue() {
         Dept temp = null;
 
-        if(nextPos(front) <= back) {
-            if(front == -1) {
-                temp = new Dept("","","");
-                front++;
-            }
-            else {
-                temp = queue[front];
-                queue[front] = null;
-                front = nextPos(front);
-            }
+        if(isEmpty()) {
+            System.out.println("Queue is Empty");
         }
-        
-        if(front == back) {
-            //Underflow
-            System.out.println("Underflow");
-            return null;
+        else {
+            temp = list[front];
+            list[front] = null;
+            front = (front + 1) % N;
         }
         return temp;
-    }
-
-    public void display() {
-        for(int i = 0; i < size; i++) {
-            if(queue[i] != null)
-                System.out.println(queue[i].toString());    
-        }    
     }
 
 }
@@ -111,9 +94,8 @@ class Queue_Data {
                 Dept temp = new Dept(s[0], s[1], s[2]);
                 q.enqueue(temp);
             }
-            System.out.println("Objects pushed to Queue...");
-            q.display();
-
+            // System.out.println("Objects pushed to Queue...");
+            
             Dept temp;
             op = new BufferedWriter(new FileWriter("Dept_out.dat"));
             while((temp = q.dequeue()) != null) {
@@ -121,7 +103,7 @@ class Queue_Data {
                 System.out.println(temp.toString());
                 op.flush();
             }
-            System.out.println("Objects popped to file");
+            // System.out.println("Objects popped to file");
 
             ip.close();
             op.close();
