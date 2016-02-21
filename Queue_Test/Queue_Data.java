@@ -15,18 +15,13 @@ class Dept {
         return deptName + " " + deptId + " " + noOfStudents + "\n";
     }
 
-    public boolean equals(Dept o) {
-        return o.deptId.equals(deptId) && o.deptName.equals(deptName) && o.noOfStudents.equals(noOfStudents);    
-    }
 }
 
 class Queue {
-    final int capacity = 5;
-    Dept[] list;
-    final int N;
     int front = 0;
     int rear = 0;
-
+    final int N;
+    Dept[] list;
 
     public Queue(int c) {
         N = c;
@@ -82,13 +77,11 @@ class Queue {
 class Queue_Data {
     public static void main(String[] args) {
         String line;
-        BufferedReader ip;
-        BufferedWriter op;
-        Queue q = new Queue(10);
+                Queue q = new Queue(10);
 
         try{
-            ip = new BufferedReader(new FileReader("Dept_in.dat"));
-            
+            // File input
+            BufferedReader ip = new BufferedReader(new FileReader("Dept_in.dat"));
             while((line = ip.readLine()) != null) {
                 String[] s = line.split(" ");
                 Dept temp = new Dept(s[0], s[1], s[2]);
@@ -96,8 +89,9 @@ class Queue_Data {
             }
             // System.out.println("Objects pushed to Queue...");
             
+            // File output
             Dept temp;
-            op = new BufferedWriter(new FileWriter("Dept_out.dat"));
+            BufferedWriter op = new BufferedWriter(new FileWriter("Dept_out.dat"));
             while((temp = q.dequeue()) != null) {
                 op.append(temp.toString());
                 System.out.println(temp.toString());
