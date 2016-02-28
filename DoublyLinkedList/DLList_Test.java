@@ -65,7 +65,7 @@ class DLList {
             tail = head;
         }
         else {
-            tail.prev = node;
+            head.prev = node;
             node.next = head;
             head = node;
         }
