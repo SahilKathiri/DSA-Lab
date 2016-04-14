@@ -1,81 +1,121 @@
 import java.io.*;
 import java.util.Scanner;
 
+class Student {
+    String id, name;
+    double cgpa;
+
+    public Student(String a, String b, String c) {
+        id = a;
+        name = b;
+        cgpa = Double.parseDouble(c);
+    }
+
+    public String toString() {
+        return id + " : " + name + " : " + cgpa + "\n";    
+    }
+
+    public int cmp(Student o) {
+        return this.id.compareTo(o.id);
+    }
+
+}
+
 class Node {
-    int value;
+    Student stud;
     Node parent;
     Node Lchild, Rchild;
 
-    public Node(int val, Node l, Node r, Node parent) {
-        value = val;
+    public Node(Student val, Node l, Node r, Node parent) {
+        stud = val;
         Lchild = l;
         Rchild = r;
         this.parent = parent;
     }
 
     public String toString() {
-        return value + "  ";    
+        return stud + "";
     }
 
-    public boolean equals(int o) {
-        return value == o;   
+    public int cmp(Node o) {
+        return stud.cmp(o.stud);   
     }
 }
 
 class BST {
     Node root;
+    int size = 0;
 
-    public BST(int val) {
-        root = new Node(val, null, null, null);
+    public BST() {
+        root = new Node(null, null, null, null);
 
     }   
 
-    public void insert(int val, Node p) {
-        if(val < p.value) {
-            if(p.Lchild != null)
-                insert(val, p.Lchild); 
-            else
-                p.Lchild = new Node(val, null, null, p);
-        }
-        else if(val > p.value) {
-            if(p.Rchild != null)
-                insert(val,p.Rchild);    
-            else
-                p.Rchild = new Node(val, null, null, p);
-        }
-
+    public void insert(Student val) {
+        insertH(val, root);    
+    }
+    public void preOrder() {
+        preOrderH(root);    
+    }
+    public void inOrder() {
+        inOrderH(root);    
+    }
+    public void postOrder() {
+        postOrderH(root);    
     }
 
-/*
-    public void delete(int val, Node p = root) {
-         if(val < p.value) {
-            if(!p.Lchild.equals(val))
-                delete(val, p.Lchild); 
+    public void insertH(Student val, Node p) {
+        if(size == 0) {
+            root.stud = val;
+            size++;
+            return;
+        }
+        if(val.cmp(p.stud) <= 0) {
+            if(p.Lchild != null)
+                insertH(val, p.Lchild); 
             else {
-                // p.Lchild = new Node(val, null, null, p);
-                p.Lchild.parent = p;
-                p.Rchild.parent = p;
-                p.Lchild = null;
+                p.Lchild = new Node(val, null, null, p);
+                size++;
             }
         }
-        else if(val > p.value) {
+        else if(val.cmp(p.stud) > 0) {
             if(p.Rchild != null)
-                insert(val.p.Rchild);    
-            else
+                insertH(val,p.Rchild);    
+            else{
                 p.Rchild = new Node(val, null, null, p);
+                size++;
+            }
         }
 
-   
     }
-/**/
 
-    public void preOrder(Node p) {
+    public void preOrderH(Node p) {
         System.out.print("" + p);
         if(p.Lchild != null) {
-            preOrder(p.Lchild);
+            preOrderH(p.Lchild);
         }
         if(p.Rchild != null) {
-            preOrder(p.Rchild);    
+            preOrderH(p.Rchild);    
+        }
+    }
+
+    public void postOrderH(Node p) {
+        if(p.Lchild != null) {
+            preOrderH(p.Lchild);
+        }
+        if(p.Rchild != null) {
+            preOrderH(p.Rchild);    
+        }
+        System.out.print("" + p);
+    }
+
+    public void inOrderH(Node p) {
+        if(p.Lchild != null) {
+            preOrderH(p.Lchild);
+        }
+        System.out.print("" + p);
+        if(p.Rchild != null) {
+            preOrderH(p.Rchild);    
         }
     }
 
@@ -86,9 +126,62 @@ class BST_Tester {
     public static void main(String[] args) { 
         Scanner inp = new Scanner(System.in);
         int ch = 0;
-        BST t = null;
+        BST t = new BST();
         int count = 0;
 
+        String line;
+
+        try {
+            BufferedReader ip = new BufferedReader(new FileReader("stud_in.dat"));
+            while((line = ip.readLine()) != null) {
+                String[] s = line.split(" : ");
+                Student temp = new Student(s[0], s[1], s[2]);
+                t.insert(temp);
+            }
+
+            System.out.println("File Loaded");
+            if (t != null) 
+                System.out.println("Tree populated");
+            else 
+                System.out.println("Error in populating tree");
+            
+            while(true) {
+                System.out.println("Enter your choice: \n" +
+                    "1. PreOrder Traversal \n" +
+                    "2. PostOrder Traversal \n" + 
+                    "3. InOrder Traversal \n" +
+                    "4. Exit"
+                );    
+                ch = inp.nextInt();
+
+                switch(ch) {
+                    case 1: 
+                        System.out.println("PreOrder traversal...");
+                        t.preOrder();
+                        break;
+
+                    case 2: 
+                        System.out.println("PostOrder traversal...");
+                        t.postOrder();
+                        break;
+                    case 3:
+                        System.out.println("PostOrder traversal...");
+                        t.postOrder();
+                        break;
+                    case 4:
+                        return;
+                    default:
+                        System.out.println("Enter a valid choice:");
+                }
+            }
+
+
+                
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+/*
         while(true) {
             System.out.println("Enter your choice: \n" +
                 "1. Insert a node \n" +
@@ -120,7 +213,8 @@ class BST_Tester {
                     System.out.println("Enter a valid choice:");
             }
         }
-
+/**/
+        
     
     }
 }
