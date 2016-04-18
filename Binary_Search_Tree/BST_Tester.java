@@ -15,7 +15,7 @@ class Student {
         return id + " : " + name + " : " + cgpa + "\n";    
     }
 
-    public int cmp(Student o) {
+    public int compareTo(Student o) {
         return this.id.compareTo(o.id);
     }
 
@@ -37,8 +37,8 @@ class Node {
         return stud + "";
     }
 
-    public int cmp(Node o) {
-        return stud.cmp(o.stud);   
+    public int compareTo(Node o) {
+        return stud.compareTo(o.stud);   
     }
 }
 
@@ -70,7 +70,7 @@ class BST {
             size++;
             return;
         }
-        if(val.cmp(p.stud) <= 0) {
+        if(val.compareTo(p.stud) <= 0) {
             if(p.Lchild != null)
                 insertH(val, p.Lchild); 
             else {
@@ -78,7 +78,7 @@ class BST {
                 size++;
             }
         }
-        else if(val.cmp(p.stud) > 0) {
+        else if(val.compareTo(p.stud) > 0) {
             if(p.Rchild != null)
                 insertH(val,p.Rchild);    
             else{
@@ -101,21 +101,21 @@ class BST {
 
     public void postOrderH(Node p) {
         if(p.Lchild != null) {
-            preOrderH(p.Lchild);
+            postOrderH(p.Lchild);
         }
         if(p.Rchild != null) {
-            preOrderH(p.Rchild);    
+            postOrderH(p.Rchild);    
         }
         System.out.print("" + p);
     }
 
     public void inOrderH(Node p) {
         if(p.Lchild != null) {
-            preOrderH(p.Lchild);
+            inOrderH(p.Lchild);
         }
         System.out.print("" + p);
         if(p.Rchild != null) {
-            preOrderH(p.Rchild);    
+            inOrderH(p.Rchild);    
         }
     }
 
@@ -165,8 +165,8 @@ class BST_Tester {
                         t.postOrder();
                         break;
                     case 3:
-                        System.out.println("PostOrder traversal...");
-                        t.postOrder();
+                        System.out.println("InOrder traversal...");
+                        t.inOrder();
                         break;
                     case 4:
                         return;
