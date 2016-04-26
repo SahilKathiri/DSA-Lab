@@ -51,6 +51,7 @@ class BST {
 
     }   
 
+    // To be called from main
     public void insert(Student val) {
         insertH(val, root);    
     }
@@ -64,6 +65,7 @@ class BST {
         postOrderH(root);    
     }
 
+    // Helper functions
     public void insertH(Student val, Node p) {
         if(size == 0) {
             root.stud = val;
@@ -89,6 +91,8 @@ class BST {
 
     }
 
+
+    // root -> L -> R
     public void preOrderH(Node p) {
         System.out.print("" + p);
         if(p.Lchild != null) {
@@ -99,6 +103,7 @@ class BST {
         }
     }
 
+    // L -> R -> root
     public void postOrderH(Node p) {
         if(p.Lchild != null) {
             postOrderH(p.Lchild);
@@ -109,6 +114,7 @@ class BST {
         System.out.print("" + p);
     }
 
+    // L -> root -> R
     public void inOrderH(Node p) {
         if(p.Lchild != null) {
             inOrderH(p.Lchild);
@@ -127,7 +133,6 @@ class BST_Tester {
         Scanner inp = new Scanner(System.in);
         int ch = 0;
         BST t = new BST();
-        int count = 0;
 
         String line;
 
@@ -139,12 +144,7 @@ class BST_Tester {
                 t.insert(temp);
             }
 
-            System.out.println("File Loaded");
-            if (t != null) 
-                System.out.println("Tree populated");
-            else 
-                System.out.println("Error in populating tree");
-            
+           
             while(true) {
                 System.out.println("Enter your choice: \n" +
                     "1. PreOrder Traversal \n" +
@@ -175,46 +175,9 @@ class BST_Tester {
                 }
             }
 
-
-                
         } catch(Exception e) {
             e.printStackTrace();
         }
 
-/*
-        while(true) {
-            System.out.println("Enter your choice: \n" +
-                "1. Insert a node \n" +
-                "2. PreOrderTraversal \n" + 
-                "4. Exit"
-            );    
-            ch = inp.nextInt();
-
-            switch(ch) {
-                case 1: 
-                    System.out.print("Enter value: ");
-                    int v = inp.nextInt();
-                    if(v == 0) break;
-                    if(count == 0) {
-                        t = new BST(v);    
-                    } else {
-                        t.insert(v, t.root);    
-                    }
-                    count++;
-                    break;
-
-                case 2: 
-                    System.out.println("PreOrder traversal...");
-                    t.preOrder(t.root);
-                    break;
-                case 4:
-                    return;
-                default:
-                    System.out.println("Enter a valid choice:");
-            }
-        }
-/**/
-        
-    
     }
 }
