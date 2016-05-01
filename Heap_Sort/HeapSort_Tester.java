@@ -19,13 +19,10 @@ class Heap {
     public void minheap(int i) {
         int left = 2*i;
         int right = 2*i+1;
-        int min;
+        int min = i;
 
-        if(left <= N && list[left] < list[i]){
+        if(left <= N && list[left] < list[i])
             min=left;
-        } else {
-            min=i;
-        }
 
         if(right <= N && list[right] < list[min]) {
             min=right;
@@ -62,7 +59,7 @@ public class HeapSort_Tester {
     public static void main(String[] args) {
         int[] list = new int[10];
 
-        Random rand = new Random(1234L);
+        Random rand = new Random(123L);
         for(int i = 0; i < list.length; i++)
         list[i] = rand.nextInt(50);
 
