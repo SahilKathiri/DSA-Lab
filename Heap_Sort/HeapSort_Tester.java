@@ -21,10 +21,10 @@ class Heap {
         int right = 2*i+1;
         int min = i;
 
-        if(left <= N && list[left] < list[i])
+        if(left <= N && list[left] > list[i])
             min=left;
 
-        if(right <= N && list[right] < list[min]) {
+        if(right <= N && list[right] > list[min]) {
             min=right;
         }
         if(min != i ) {
@@ -49,22 +49,32 @@ class Heap {
     }
 
     public void disp() {
-        System.out.println(Arrays.toString(list));
+        for(int i = 0; i < list.length/10; i++) {
+            int k = i * 10;
+            for(int j = 0; j < 10; j++) {
+                System.out.print(String.format("%4d", list[j+k]));    
+            }    
+            System.out.println();
+        }
+            System.out.println();
+            System.out.println();
     }
-
-
 }
 
 public class HeapSort_Tester {
     public static void main(String[] args) {
-        int[] list = new int[10];
+        int[] list = new int[100];
 
         Random rand = new Random(123L);
         for(int i = 0; i < list.length; i++)
-        list[i] = rand.nextInt(50);
+            list[i] = rand.nextInt(100);
 
         Heap h = new Heap(list);
         System.out.println("The list before sorting/heaping");
+        h.disp();
+
+        System.out.println("After building heap");
+        h.buildheap();
         h.disp();
 
         System.out.println("The list after sorting");
