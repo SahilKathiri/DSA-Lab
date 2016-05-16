@@ -1,4 +1,6 @@
 import java.util.*;
+import java.io.*;
+
 class Edge
 {
    int src, dest;
@@ -135,33 +137,54 @@ class Graph
         }
         S.add (0,u);
         S.add (0,src);
+        System.out.print("Source: ");
        for (Integer s : S)
            System.out.print (s + " ");
-       System.out.println ();
+       System.out.println (" : Destination");
     }
 }
 public class GraphTest
 {
-    public static void main (String[] args)
+    public static ArrayList<Integer> vertexSort (ArrayList<Integer> v)
     {
-        ArrayList<Integer> vertex = new ArrayList <> ();
-        vertex.add (0);
-        vertex.add (1);
-        vertex.add (2);
-        vertex.add (3);
-        vertex.add (4);
+        Integer[] arr = new Integer[v.size()];
+        arr = v.toArray (arr);
+        Arrays.sort (arr);
+        for (int i = 0; i < arr.length-1; i++)
+            for (int j = i+1; j < arr.length; j++)
+                if (arr[j] == arr[i])
+                    arr[j] = -1;
+        ArrayList<Integer> vertex = new ArrayList<> ();
+        for (int i = 0; i < arr.length; i++)
+            if (arr[i] != -1)
+                vertex.add (arr[i]);
+        return vertex;
+    }
+    public static void main (String[] args) throws IOException
+    {
+        String[] s;
+        String s1;
+        Graph g;
+        ArrayList<Integer> vertex = new ArrayList<> ();
         ArrayList<Edge> edge = new ArrayList<> ();
-        edge.add (new Edge(0,1,10));
-        edge.add (new Edge(1,2,50));
-        edge.add (new Edge(3,2,20));
-        edge.add (new Edge(3,4,60));
-        edge.add (new Edge(0,4,100));
-        edge.add (new Edge (0,3,30));
-        edge.add (new Edge (2,4,10));
-        Graph g = new Graph (vertex, edge);
+        try
+        (
+            DataInputStream ip = new DataInputStream (new BufferedInputStream (new FileInputStream ("dijkstrain2.dat")));
+        )
+        {
+            while ((s1 = ip.readLine ())!= null)
+            {
+                s = s1.split(",");
+                edge.add (new Edge (Integer.parseInt(s[0]), Integer.parseInt(s[1]), Integer.parseInt(s[2])));
+                vertex.add (Integer.parseInt (s[0]));
+                vertex.add (Integer.parseInt (s[1]));
+            }
+            vertex = vertexSort (vertex);
+        }
+        g = new Graph (vertex,edge);
         g.display ();
         ArrayList<Integer> dist = g.dijkstra (vertex.get (0));
-        System.out.println ("Consider vertex 0 to be source");
+                System.out.println ("Consider vertex 0 to be source");
         System.out.print ("Cost of shortest path from source to every vertex: ");
         for (int i = 0; i < dist.size (); i++)
             System.out.print (dist.get (i) + " ");
